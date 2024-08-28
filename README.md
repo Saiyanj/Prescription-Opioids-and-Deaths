@@ -1,6 +1,9 @@
 # Prescription-Opioids-and-Deaths
 
 Data from 2022, sourced from CMS and the CDC via Kaggle.com
+https://data.cms.gov/resources/medicare-part-d-prescribers-by-geography-and-drug-data-dictionary
+https://www.cdc.gov/nchs/pressroom/sosmap/drug_poisoning_mortality/drug_poisoning.htm
+
 
 Hi! I found some interesting datasets on Kaggle that were sourced from CMS and the CDC and I decided to clean up the data a bit and play around with it in Tableau.
 The data from CMS is medication claims from Medicare Part D. I extracted the medications that were opioids and added up the amount of opioid claims there were per state.
