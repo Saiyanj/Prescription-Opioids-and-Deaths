@@ -1,0 +1,687 @@
+--Code used to clean up the opioid deaths data from the CDC.
+
+CREATE TABLE drug_overdose_by_state (
+    entry_id INT PRIMARY KEY,
+    years DATE,
+    state VARCHAR (20),
+    rate DECIMAL (10,5),
+    deaths INT
+);
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.0/Uploads/(unedited) drug overdoses by state.csv'
+  INTO TABLE drug_overdose_by_state
+  FIELDS TERMINATED BY ','
+  IGNORE 1 LINES;
+
+SELECT *
+FROM drug_overdose_by_state
+WHERE NOT years LIKE '%2022%' ;
+
+DELETE FROM drug_overdose_by_state
+WHERE NOT years LIKE '%2022%';
+
+SELECT *
+FROM drug_overdose_by_state
+
+--Code used to clean up the opioid prescription data from CMS part 1.
+
+CREATE TABLE prescribing_data(
+    entry_id INT PRIMARY KEY,
+    Prscrbr_Geo_Lvl VARCHAR(20) DEFAULT NULL,
+    Prscrbr_Geo_Desc VARCHAR (20) DEFAULT NULL,
+    Brnd_Name VARCHAR (30) DEFAULT NULL,
+    Gnrc_Name VARCHAR (30) DEFAULT NULL,
+    Tot_Prscrbrs INT DEFAULT NULL,
+    Tot_Clms INT DEFAULT NULL,
+    Tot_30day_Fills INT DEFAULT NULL,
+    Tot_Drug_Cst INT DEFAULT NULL,
+    Tot_Benes INT DEFAULT NULL,
+    GE65_Tot_Clms INT DEFAULT NULL,
+    GE65_Tot_30day_Fills INT DEFAULT NULL,
+    GE65_Tot_Drug_Cst INT DEFAULT NULL,
+    GE65_Tot_Benes INT DEFAULT NULL,
+    LIS_Bene_Cst_Shr INT DEFAULT NULL,
+    NonLIS_Bene_Cst_Shr INT DEFAULT NULL,
+    Opioid_Drug_Flag VARCHAR (2) DEFAULT NULL,
+    Opioid_LA_Drug_Flag VARCHAR (2) DEFAULT NULL,
+    Antbtc_Drug_Flag VARCHAR (2) DEFAULT NULL,
+    Antpsyct_Drug_Flag VARCHAR (2) DEFAULT NULL
+);
+
+
+SELECT *
+FROM prescribing_data;
+
+ALTER TABLE prescribing_data
+MODIFY COLUMN Tot_Drug_Cst BIGINT;
+
+ALTER TABLE prescribing_data
+MODIFY COLUMN GE65_Tot_Drug_Cst BIGINT;
+
+ALTER TABLE prescribing_data
+MODIFY COLUMN Prscrbr_Geo_Desc VARCHAR (30) DEFAULT NULL;
+
+ALTER TABLE prescribing_data
+MODIFY COLUMN Prscrbr_Geo_Desc VARCHAR (40) DEFAULT NULL;
+
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.0/Uploads/Medicare_Part_D_Prescribers_by_Geography_and_Drug_2022.csv'
+  INTO TABLE prescribing_data
+  FIELDS TERMINATED BY ','
+  IGNORE 1 LINES;
+
+
+DELETE FROM prescribing_data
+WHERE Prscrbr_Geo_Desc = 'National';
+
+DELETE FROM prescribing_data
+WHERE Prscrbr_Geo_Desc = 'American Samoa';
+
+DELETE FROM prescribing_data
+WHERE Prscrbr_Geo_Desc = 'Guam';
+
+DELETE FROM prescribing_data
+WHERE Prscrbr_Geo_Desc = 'Northern Mariana Islands';
+
+DELETE FROM prescribing_data
+WHERE Prscrbr_Geo_Desc = 'Puerto Rico';
+
+DELETE FROM prescribing_data
+WHERE Prscrbr_Geo_Desc = 'Virgin Islands';
+
+DELETE FROM prescribing_data
+WHERE Prscrbr_Geo_Desc = 'Armed Forces Central/South America';
+
+DELETE FROM prescribing_data
+WHERE Prscrbr_Geo_Desc = 'Unknown';
+
+DELETE FROM prescribing_data
+WHERE Prscrbr_Geo_Desc = 'Foreign Country';
+
+--Code used to clean up the opioid prescription data from CMS part 2.
+
+CREATE TABLE prescribing_data_opiods(
+    entry_id INT PRIMARY KEY,
+    Prscrbr_Geo_Lvl VARCHAR(20) DEFAULT NULL,
+    Prscrbr_Geo_Desc VARCHAR (20) DEFAULT NULL,
+    Brnd_Name VARCHAR (30) DEFAULT NULL,
+    Gnrc_Name VARCHAR (30) DEFAULT NULL,
+    Tot_Prscrbrs INT DEFAULT NULL,
+    Tot_Clms INT DEFAULT NULL,
+    Tot_30day_Fills INT DEFAULT NULL,
+    Tot_Drug_Cst INT DEFAULT NULL,
+    Tot_Benes INT DEFAULT NULL,
+    GE65_Tot_Clms INT DEFAULT NULL,
+    GE65_Tot_30day_Fills INT DEFAULT NULL,
+    GE65_Tot_Drug_Cst INT DEFAULT NULL,
+    GE65_Tot_Benes INT DEFAULT NULL,
+    LIS_Bene_Cst_Shr INT DEFAULT NULL,
+    NonLIS_Bene_Cst_Shr INT DEFAULT NULL,
+    Opioid_Drug_Flag VARCHAR (2) DEFAULT NULL,
+    Opioid_LA_Drug_Flag VARCHAR (2) DEFAULT NULL,
+    Antbtc_Drug_Flag VARCHAR (2) DEFAULT NULL,
+    Antpsyct_Drug_Flag VARCHAR (2) DEFAULT NULL
+);
+
+
+SELECT *
+FROM prescribing_data_opiods;
+
+ALTER TABLE prescribing_data_opiods
+MODIFY COLUMN Tot_Drug_Cst BIGINT;
+
+ALTER TABLE prescribing_data_opiods
+MODIFY COLUMN GE65_Tot_Drug_Cst BIGINT;
+
+ALTER TABLE prescribing_data_opiods
+MODIFY COLUMN Prscrbr_Geo_Desc VARCHAR (30) DEFAULT NULL;
+
+ALTER TABLE prescribing_data_opiods
+MODIFY COLUMN Prscrbr_Geo_Desc VARCHAR (40) DEFAULT NULL;
+
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.0/Uploads/Medicare_Part_D_Prescribers_by_Geography_and_Drug_2022.csv'
+  INTO TABLE prescribing_data_opiods
+  FIELDS TERMINATED BY ','
+  IGNORE 1 LINES;
+
+
+DELETE FROM prescribing_data_opiods
+WHERE Prscrbr_Geo_Desc = 'National';
+
+DELETE FROM prescribing_data_opiods
+WHERE Prscrbr_Geo_Desc = 'American Samoa';
+
+DELETE FROM prescribing_data_opiods
+WHERE Prscrbr_Geo_Desc = 'Guam';
+
+DELETE FROM prescribing_data_opiods
+WHERE Prscrbr_Geo_Desc = 'Northern Mariana Islands';
+
+DELETE FROM prescribing_data_opiods
+WHERE Prscrbr_Geo_Desc = 'Puerto Rico';
+
+DELETE FROM prescribing_data_opiods
+WHERE Prscrbr_Geo_Desc = 'Virgin Islands';
+
+DELETE FROM prescribing_data_opiods
+WHERE Prscrbr_Geo_Desc = 'Armed Forces Central/South America';
+
+DELETE FROM prescribing_data_opiods
+WHERE Prscrbr_Geo_Desc = 'Unknown';
+
+DELETE FROM prescribing_data_opiods
+WHERE Prscrbr_Geo_Desc = 'Foreign Country';
+
+
+SELECT *
+FROM prescribing_data_opiods
+WHERE NOT Opioid_Drug_Flag = 'Y';
+
+DELETE FROM prescribing_data_opiods
+WHERE NOT Opioid_Drug_Flag = 'Y';
+
+SELECT *
+FROM prescribing_data_opiods;
+
+ALTER TABLE prescribing_data_opiods
+DROP COLUMN  Antbtc_Drug_Flag;
+
+ALTER TABLE prescribing_data_opiods
+DROP COLUMN  Antpsyct_Drug_Flag;
+
+SELECT *
+FROM prescribing_data_opiods;
+
+DELETE FROM prescribing_data_opiods
+WHERE Prscrbr_Geo_Desc LIKE '%Armed%';
+
+UPDATE prescribing_data_opiods
+SET Tot_Clms = 0
+WHERE Tot_Clms = 9999999;
+
+UPDATE prescribing_data_opiods
+SET Tot_Benes = 0
+WHERE Tot_Benes = 9999999;
+
+--Code used to clean up the opioid prescription data from CMS part 3.
+
+CREATE TABLE condensed_prescribing_data (
+    entry_id INT PRIMARY KEY,
+    state VARCHAR(30),
+    total_claims INT,
+    total_beneficiaries INT
+);
+
+SELECT *
+FROM condensed_prescribing_data;
+
+SELECT SUM(Tot_Clms)
+FROM prescribing_data_opiods
+WHERE Prscrbr_Geo_Desc = 'Alabama';
+
+SELECT SUM(Tot_Benes)
+FROM prescribing_data_opiods
+WHERE Prscrbr_Geo_Desc = 'Alabama';
+
+INSERT INTO condensed_prescribing_data VALUES (1, 'Alabama', 1662712, 404330);
+
+SELECT SUM(Tot_Clms)
+FROM prescribing_data_opiods
+WHERE Prscrbr_Geo_Desc = 'Alaska';
+
+SELECT SUM(Tot_Benes)
+FROM prescribing_data_opiods
+WHERE Prscrbr_Geo_Desc = 'Alaska';
+
+INSERT INTO condensed_prescribing_data VALUES (2, 'Alaska', 76974, 24628);
+
+SELECT SUM(Tot_Clms)
+FROM prescribing_data_opiods
+WHERE Prscrbr_Geo_Desc = 'Arizona';
+
+SELECT SUM(Tot_Benes)
+FROM prescribing_data_opiods
+WHERE Prscrbr_Geo_Desc = 'Arizona';
+
+INSERT INTO condensed_prescribing_data VALUES (3, 'Arizona',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Arizona'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Arizona')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (4, 'Arkansas',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Arkansas'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Arkansas')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (5, 'California',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'California'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'California')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (6, 'Colorado',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Colorado'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Colorado')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (7, 'Connecticut',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Connecticut'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Connecticut')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (8, 'Delaware',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Delaware'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Delaware')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (9, 'District of Columbia',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'District of Columbia'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'District of Columbia')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (10, 'Florida',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Florida'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Florida')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (11, 'Georgia',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Georgia'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Georgia')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (12, 'Hawaii',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Hawaii'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Hawaii')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (13, 'Idaho',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Idaho'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Idaho')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (14, 'Illinois',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Illinois'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Illinois')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (15, 'Indiana',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Indiana'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Indiana')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (16, 'Iowa',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Iowa'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Iowa')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (17, 'Kansas',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Kansas'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Kansas')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (18, 'Kentucky',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Kentucky'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Kentucky')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (19, 'Louisiana',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Louisiana'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Louisiana')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (20, 'Maine',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Maine'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Maine')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (21, 'Maryland',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Maryland'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Maryland')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (22, 'Massachusetts',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Massachusetts'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Massachusetts')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (23, 'Michigan',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Michigan'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Michigan')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (24, 'Minnesota',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Minnesota'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Minnesota')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (25, 'Missisippi',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Mississippi'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Mississippi')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (26, 'Missouri',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Missouri'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Missouri')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (27, 'Montana',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Montana'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Montana')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (28, 'Nebraska',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Nebraska'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Nebraska')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (29, 'Nevada',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Nevada'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Nevada')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (30, 'New Hampshire',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'New Hampshire'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'New Hampshire')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (31, 'New Jersey',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'New Jersey'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'New Jersey')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (32, 'New Mexico',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'New Mexico'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'New Mexico')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (33, 'New York',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'New York'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'New York')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (34, 'North Carolina',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'North Carolina'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'North Carolina')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (35, 'North Dakota',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'North Dakota'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'North Dakota')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (36, 'Ohio',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Ohio'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Ohio')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (37, 'Oklahoma',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Oklahoma'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Oklahoma')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (38, 'Oregon',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Oregon'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Oregon')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (39, 'Pennsylvania',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Pennsylvania'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Pennsylvania')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (40, 'Rhode Island',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Rhode Island'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Rhode Island')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (41, 'South Carolina',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'South Carolina'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'South Carolina')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (42, 'South Dakota',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'South Dakota'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'South Dakota')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (43, 'Tennessee',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Tennessee'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Tennessee')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (44, 'Texas',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Texas'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Texas')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (45, 'Utah',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Utah'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Utah')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (46, 'Vermont',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Vermont'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Vermont')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (47, 'Virginia',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Virginia'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Virginia')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (48, 'Washington',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Washington'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Washington')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (49, 'West Virginia',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'West Virginia'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'West Virginia')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (50, 'Wisconsin',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Wisconsin'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Wisconsin')
+);
+
+INSERT INTO condensed_prescribing_data VALUES (51, 'Wyoming',
+    (SELECT SUM(Tot_Clms)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Wyoming'),
+    (SELECT SUM(Tot_Benes)
+    FROM prescribing_data_opiods
+    WHERE Prscrbr_Geo_Desc = 'Wyoming')
+);
+
